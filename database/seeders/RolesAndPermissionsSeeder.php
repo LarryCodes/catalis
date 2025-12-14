@@ -21,45 +21,45 @@ class RolesAndPermissionsSeeder extends Seeder
         // Create permissions
         $permissions = [
             // Employee permissions
-            'view employees',
-            'create employees',
-            'edit employees',
-            'delete employees',
+            'view-employees',
+            'create-employees',
+            'edit-employees',
+            'delete-employees',
             
             // Partner/Client permissions
-            'view partners',
-            'create partners',
-            'edit partners',
-            'delete partners',
+            'view-partners',
+            'create-partners',
+            'edit-partners',
+            'delete-partners',
             
             // Payroll permissions
-            'view payroll',
-            'run payroll',
-            'edit payroll',
-            'approve payroll',
+            'view-payroll',
+            'run-payroll',
+            'edit-payroll',
+            'approve-payroll',
             
             // Time & Attendance permissions
-            'view attendance',
-            'manage attendance',
-            'approve attendance',
+            'view-attendance',
+            'manage-attendance',
+            'approve-attendance',
             
             // Talent Acquisition permissions
-            'view recruitment',
-            'manage recruitment',
+            'view-recruitment',
+            'manage-recruitment',
             
             // Performance permissions
-            'view performance',
-            'manage performance',
-            'approve appraisals',
+            'view-performance',
+            'manage-performance',
+            'approve-appraisals',
             
             // Reports & Analytics permissions
-            'view reports',
-            'export reports',
+            'view-reports',
+            'export-reports',
             
             // System permissions
-            'manage users',
-            'manage roles',
-            'manage settings',
+            'manage-users',
+            'manage-roles',
+            'manage-settings',
         ];
 
         foreach ($permissions as $permission) {
@@ -75,50 +75,50 @@ class RolesAndPermissionsSeeder extends Seeder
         // Admin - manage most things except system settings
         $admin = Role::firstOrCreate(['name' => 'Admin']);
         $admin->givePermissionTo([
-            'view employees', 'create employees', 'edit employees', 'delete employees',
-            'view partners', 'create partners', 'edit partners', 'delete partners',
-            'view payroll', 'run payroll', 'edit payroll', 'approve payroll',
-            'view attendance', 'manage attendance', 'approve attendance',
-            'view recruitment', 'manage recruitment',
-            'view performance', 'manage performance', 'approve appraisals',
-            'view reports', 'export reports',
-            'manage users',
+            'view-employees', 'create-employees', 'edit-employees', 'delete-employees',
+            'view-partners', 'create-partners', 'edit-partners', 'delete-partners',
+            'view-payroll', 'run-payroll', 'edit-payroll', 'approve-payroll',
+            'view-attendance', 'manage-attendance', 'approve-attendance',
+            'view-recruitment', 'manage-recruitment',
+            'view-performance', 'manage-performance', 'approve-appraisals',
+            'view-reports', 'export-reports',
+            'manage-users',
         ]);
 
         // HR Manager - manage employees, attendance, recruitment
         $hrManager = Role::firstOrCreate(['name' => 'HR Manager']);
         $hrManager->givePermissionTo([
-            'view employees', 'create employees', 'edit employees',
-            'view partners',
-            'view attendance', 'manage attendance', 'approve attendance',
-            'view recruitment', 'manage recruitment',
-            'view performance', 'manage performance',
-            'view reports',
+            'view-employees', 'create-employees', 'edit-employees',
+            'view-partners',
+            'view-attendance', 'manage-attendance', 'approve-attendance',
+            'view-recruitment', 'manage-recruitment',
+            'view-performance', 'manage-performance',
+            'view-reports',
         ]);
 
         // Payroll Officer - payroll focused
         $payrollOfficer = Role::firstOrCreate(['name' => 'Payroll Officer']);
         $payrollOfficer->givePermissionTo([
-            'view employees',
-            'view payroll', 'run payroll', 'edit payroll',
-            'view attendance',
-            'view reports',
+            'view-employees',
+            'view-payroll', 'run-payroll', 'edit-payroll',
+            'view-attendance',
+            'view-reports',
         ]);
 
         // Team Lead - limited management
         $teamLead = Role::firstOrCreate(['name' => 'Team Lead']);
         $teamLead->givePermissionTo([
-            'view employees',
-            'view attendance', 'approve attendance',
-            'view performance',
-            'view reports',
+            'view-employees',
+            'view-attendance', 'approve-attendance',
+            'view-performance',
+            'view-reports',
         ]);
 
         // Employee - basic access
         $employee = Role::firstOrCreate(['name' => 'Employee']);
         $employee->givePermissionTo([
-            'view employees',
-            'view attendance',
+            'view-employees',
+            'view-attendance',
         ]);
 
         // Create default Super Admin user
