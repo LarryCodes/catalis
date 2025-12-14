@@ -50,6 +50,11 @@ class Partner extends Model
         return 'C-' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
     }
 
+    public function sites()
+    {
+        return $this->hasMany(Site::class);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('active', true);

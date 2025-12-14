@@ -44,6 +44,12 @@
         border-color: #a3a2a3;
     }
 
+    select.search-input {
+        height: 40px;
+        line-height: 1.5;
+        appearance: auto;
+    }
+
     .button-group {
         margin-left: 20px;
     }
@@ -400,7 +406,7 @@
     <div class="people-controls">
       <div class="views-selector">
         <button class="view-tab" data-view="client">Partners</button>
-        <button class="view-tab" data-view="site">Locations</button>
+        <button class="view-tab" data-view="site">Sites</button>
         <button class="view-tab" data-view="department">Departments</button>
         <button class="view-tab" data-view="employee-type">Tenures</button>
         <button class="view-tab active" data-view="employee">Employees</button>
@@ -452,7 +458,7 @@
               </button>
               <button class="option-item" data-action="site">
                 <img src="{{ asset('images/site.svg') }}" alt="Site" />
-                <p style="font-size: 0.87rem; font-weight: 600;">Location</p>
+                <p style="font-size: 0.87rem; font-weight: 600;">Site</p>
               </button>
               <button class="option-item" data-action="department">
                 <img src="{{ asset('images/department.svg') }}" alt="Department" />
@@ -550,6 +556,10 @@
 
   <div class="people-table-wrapper" data-view-section="client" style="position: relative; min-height: 300px; overflow: visible; display:none;">
     <livewire:partners-component />
+  </div>
+
+  <div class="people-table-wrapper" data-view-section="site" style="position: relative; min-height: 300px; overflow: visible; display:none;">
+    <livewire:sites-component />
   </div>
 </section>
 @endsection

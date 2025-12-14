@@ -32,6 +32,12 @@ class RolesAndPermissionsSeeder extends Seeder
             'edit-partners',
             'delete-partners',
             
+            // Site permissions
+            'view-sites',
+            'create-sites',
+            'edit-sites',
+            'delete-sites',
+            
             // Payroll permissions
             'view-payroll',
             'run-payroll',
