@@ -11,8 +11,9 @@ class PeopleController extends Controller
     public function __invoke(): View
     {
         $people = $this->samplePeople();
+        $partners = $this->samplePartners();
 
-        return view('people', compact('people'));
+        return view('people', compact('people', 'partners'));
     }
 
     protected function samplePeople(): Collection
@@ -75,5 +76,49 @@ class PeopleController extends Controller
 
             return (object) $record;
         });
+    }
+
+    protected function samplePartners(): Collection
+    {
+        $records = [
+            [
+                'id' => 1,
+                'name' => 'Vertex Logistics',
+                'code' => 'CL-001',
+                'primary_contact' => 'Moses Katongole',
+                'email' => 'moses@vertexlogistics.com',
+                'phone' => '+256 777 111222',
+                'sites' => ['Kampala CBD', 'Namanve'],
+                'active_headcount' => 152,
+                'sla_tier' => 'Premium',
+                'status' => 'Active',
+            ],
+            [
+                'id' => 2,
+                'name' => 'Serenity Hospitals',
+                'code' => 'CL-002',
+                'primary_contact' => 'Dr. Ruth Kasse',
+                'email' => 'rkasse@serenityhospital.org',
+                'phone' => '+256 778 555000',
+                'sites' => ['Bukoto', 'Ntinda'],
+                'active_headcount' => 87,
+                'sla_tier' => 'Standard',
+                'status' => 'Pending',
+            ],
+            [
+                'id' => 3,
+                'name' => 'Northern Agro Supply',
+                'code' => 'CL-003',
+                'primary_contact' => 'Andrew Obua',
+                'email' => 'andrew@northernagro.co.ug',
+                'phone' => '+256 706 412890',
+                'sites' => ['Gulu', 'Lira', 'Kitgum'],
+                'active_headcount' => 236,
+                'sla_tier' => 'Premium',
+                'status' => 'Active',
+            ],
+        ];
+
+        return collect($records)->map(fn ($record) => (object) $record);
     }
 }
