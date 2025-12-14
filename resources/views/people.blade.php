@@ -561,6 +561,10 @@
   <div class="people-table-wrapper" data-view-section="site" style="position: relative; min-height: 300px; overflow: visible; display:none;">
     <livewire:sites-component />
   </div>
+
+  <div class="people-table-wrapper" data-view-section="department" style="position: relative; min-height: 300px; overflow: visible; display:none;">
+    <livewire:departments-component />
+  </div>
 </section>
 @endsection
 

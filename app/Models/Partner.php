@@ -55,6 +55,11 @@ class Partner extends Model
         return $this->hasMany(Site::class);
     }
 
+    public function departments()
+    {
+        return $this->hasMany(Department::class);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('active', true);
