@@ -565,6 +565,10 @@
   <div class="people-table-wrapper" data-view-section="department" style="position: relative; min-height: 300px; overflow: visible; display:none;">
     <livewire:departments-component />
   </div>
+
+  <div class="people-table-wrapper" data-view-section="employee-type" style="position: relative; min-height: 300px; overflow: visible; display:none;">
+    <livewire:tenures-component />
+  </div>
 </section>
 @endsection
 
