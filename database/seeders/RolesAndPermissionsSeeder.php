@@ -130,8 +130,10 @@ class RolesAndPermissionsSeeder extends Seeder
             ]
         );
         $user->assignRole('Super Admin');
+        $user->givePermissionTo(Permission::all()); // Assign all permissions directly to user
 
         $this->command->info('Roles and permissions seeded successfully!');
         $this->command->info('Default admin user created: admin@catalis.hr / password');
+        $this->command->info('Super Admin has all permissions assigned directly and through role.');
     }
 }
