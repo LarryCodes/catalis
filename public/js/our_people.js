@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteBtn = document.getElementById('delete-selected');
   const deactivateBtn = document.getElementById('deactivate-selected');
   const newEmployeeBtn = document.getElementById('new-employee-icon');
-  const searchInput = document.getElementById('live-search-input');
+  const searchInputs = document.querySelectorAll('.search-input[data-search-view]');
+  const employeeSearchInput = document.querySelector('.search-input[data-search-view="employee"]');
+  const partnerSearchInput = document.querySelector('.search-input[data-search-view="client"]');
 
   const getRowCheckboxes = () => Array.from(document.querySelectorAll('.quote-checkbox'));
 
@@ -79,11 +81,14 @@ function toggleActions() {
 
     const viewTabs = document.querySelectorAll('.view-tab');
     const viewsSelector = document.querySelector('.views-selector');
+    const viewSections = document.querySelectorAll('[data-view-section]');
+    const searchForms = document.querySelectorAll('[data-search-form]');
     
     function updateSlidingBackground(activeTab) {
         if (!activeTab || !viewsSelector) return;
         
         const selectorRect = viewsSelector.getBoundingClientRect();
+        
         const tabRect = activeTab.getBoundingClientRect();
         
         const left = tabRect.left - selectorRect.left;
@@ -97,6 +102,17 @@ function toggleActions() {
         viewsSelector.style.setProperty('--slider-top', `${top}px`);
     }
     
+    function toggleViewSections(viewKey) {
+        viewSections.forEach(section => {
+            const matches = section.dataset.viewSection === viewKey;
+            section.style.display = matches ? '' : 'none';
+        });
+        searchForms.forEach(form => {
+            const matches = form.dataset.searchForm === viewKey;
+            form.style.display = matches ? '' : 'none';
+        });
+    }
+
     viewTabs.forEach(tab => {
         tab.addEventListener('click', (e) => {
             e.preventDefault();
@@ -104,36 +120,39 @@ function toggleActions() {
             viewTabs.forEach(t => t.classList.remove('active'));
             
             tab.classList.add('active');
-            tab.classList.add('active');
             
             updateSlidingBackground(tab);
             
             const view = tab.dataset.view;
-            console.log(`Switched to ${view} view`);
-            
-            if (view === 'employee') {
-                console.log('Showing employee table');
-            } else {
-                console.log(`Showing "No data available" for ${view}`);
-            }
+            toggleViewSections(view);
         });
     });
     
     const activeTab = document.querySelector('.view-tab.active');
     if (activeTab) {
         updateSlidingBackground(activeTab);
+        toggleViewSections(activeTab.dataset.view);
     }
 
-  if (searchInput) {
-    searchInput.addEventListener('input', performLiveSearch);
-    searchInput.addEventListener('keyup', performLiveSearch);
+  if (employeeSearchInput) {
+    const handleEmployeeSearch = () => performEmployeeSearch(employeeSearchInput.value);
+    employeeSearchInput.addEventListener('input', handleEmployeeSearch);
+    employeeSearchInput.addEventListener('keyup', handleEmployeeSearch);
   }
 
-  function performLiveSearch() {
-    const tableBody = document.querySelector('.people-table tbody');
+  if (partnerSearchInput) {
+    const handlePartnerSearch = () => performPartnerSearch(partnerSearchInput.value);
+    partnerSearchInput.addEventListener('input', handlePartnerSearch);
+    partnerSearchInput.addEventListener('keyup', handlePartnerSearch);
+  }
+
+  function performEmployeeSearch(rawTerm = '') {
+    const employeeSection = document.querySelector('[data-view-section="employee"]');
+    const tableBody = employeeSection?.querySelector('.people-table tbody');
     if (!tableBody) return;
+
     const rows = Array.from(tableBody.querySelectorAll('tr'));
-    const term = (searchInput?.value || '').toLowerCase().trim();
+    const term = (rawTerm || '').toLowerCase().trim();
 
     let visibleCount = 0;
     rows.forEach(row => {
@@ -146,6 +165,21 @@ function toggleActions() {
     });
 
     updateNoResultsRow(tableBody, term, visibleCount);
+  }
+
+  function performPartnerSearch(rawTerm = '') {
+    const partnerSection = document.querySelector('[data-view-section="client"]');
+    const tableBody = partnerSection?.querySelector('.partners-table tbody');
+    if (!tableBody) return;
+
+    const rows = Array.from(tableBody.querySelectorAll('tr'));
+    const term = (rawTerm || '').toLowerCase().trim();
+
+    rows.forEach(row => {
+      const cells = Array.from(row.querySelectorAll('td'));
+      const matches = cells.some(td => td.textContent.toLowerCase().includes(term));
+      row.style.display = !term || matches ? '' : 'none';
+    });
   }
 
   function updateNoResultsRow(tbody, term, visibleCount) {
@@ -171,7 +205,7 @@ function toggleActions() {
 
     const remaining = Array.from(tbody.querySelectorAll('tr')).filter(r => !r.querySelector('td[colspan]'));
     const hasData = remaining.some(r => r.style.display !== 'none');
-    const searchTerm = (searchInput?.value || '').trim();
+    const searchTerm = (employeeSearchInput?.value || '').trim();
     
     const existingNoDataRows = tbody.querySelectorAll('.no-results-row, .no-data-row');
     existingNoDataRows.forEach(row => row.remove());

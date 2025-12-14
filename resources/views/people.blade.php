@@ -21,9 +21,28 @@
         <button class="view-tab" data-view="team">Teams</button>
       </div>
 
-      <form action="#" method="get" class="search-form">
+      <form action="#" method="get" class="search-form" data-search-form="employee">
         <div class="search-container">
-          <input type="search" name="p" placeholder="Search" class="search-input" id="live-search-input">
+          <input 
+            type="search" 
+            name="p" 
+            placeholder="Search" 
+            class="search-input" 
+            id="live-search-input"
+            data-search-view="employee"
+          >
+          <img src="{{ asset('images/filter.svg') }}" alt="Filter Icon" class="search-filter-icon" />
+        </div>
+      </form>
+      <form action="#" method="get" class="search-form" data-search-form="client" style="display: none;">
+        <div class="search-container">
+          <input 
+            type="search" 
+            name="partner_search" 
+            placeholder="Search partners" 
+            class="search-input" 
+            data-search-view="client"
+          >
           <img src="{{ asset('images/filter.svg') }}" alt="Filter Icon" class="search-filter-icon" />
         </div>
       </form>
@@ -80,9 +99,9 @@
     </div>
   </div>
 
-  <div class="people-table-wrapper" style="position: relative; min-height: 300px; overflow: visible;">
+  <div class="people-table-wrapper" data-view-section="employee" style="position: relative; min-height: 300px; overflow: visible;">
     @if(isset($people) && count($people))
-    <table class="people-table" style="position: relative;">
+    <table class="people-table" data-table="employee" style="position: relative;">
       <thead>
         <tr>
           <th class="checkbox-cell" style="width: 20px;">
@@ -139,6 +158,53 @@
       <img src="{{ asset('images/empty_state.svg') }}" alt="No employees" />
       <h3>No employees yet</h3>
       <p>Use the "Add New" button to create your first employee record.</p>
+    </div>
+    @endif
+  </div>
+
+  <div class="people-table-wrapper" data-view-section="client" style="position: relative; min-height: 300px; overflow: visible; display:none;">
+    @if(isset($partners) && count($partners))
+    <table class="people-table partners-table" data-table="client" style="position: relative;">
+      <thead>
+        <tr>
+          <th style="padding-right: 25px; width: 110px;">Client Code</th>
+          <th style="padding-right: 25px; width: 200px;">Name</th>
+          <th style="padding-right: 25px; width: 170px;">Primary Contact</th>
+          <th style="padding-right: 25px; width: 170px;">Email</th>
+          <th style="padding-right: 25px; width: 150px;">Phone</th>
+          <th style="padding-right: 25px; width: 200px;">Sites</th>
+          <th style="padding-right: 25px; width: 130px;">SLA Tier</th>
+          <th style="padding-right: 25px; width: 120px;">Headcount</th>
+          <th style="padding-right: 25px; width: 100px;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach($partners as $partner)
+        <tr>
+          <td>{{ $partner->code }}</td>
+          <td>
+            <div class="person-name">{{ $partner->name }}</div>
+          </td>
+          <td>{{ $partner->primary_contact }}</td>
+          <td>{{ $partner->email }}</td>
+          <td>{{ $partner->phone }}</td>
+          <td>{{ implode(', ', $partner->sites) }}</td>
+          <td>{{ $partner->sla_tier }}</td>
+          <td>{{ $partner->active_headcount }}</td>
+          <td>
+            <span class="status-pill {{ strtolower($partner->status) === 'active' ? 'active' : 'inactive' }}">
+              {{ $partner->status }}
+            </span>
+          </td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+    @else
+    <div class="empty-state">
+      <img src="{{ asset('images/empty_state.svg') }}" alt="No partners" />
+      <h3>No partners yet</h3>
+      <p>Use the "Add New" button to register your first client.</p>
     </div>
     @endif
   </div>
