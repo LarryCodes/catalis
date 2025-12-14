@@ -9,11 +9,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Helvetica;
+            font-size: 0.875rem;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #f4f3f3;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -22,87 +23,79 @@
 
         .forgot-container {
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
             width: 100%;
-            max-width: 420px;
-            padding: 48px 40px;
+            max-width: 340px;
+            padding: 32px;
         }
 
         .forgot-header {
-            text-align: center;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .forgot-header h1 {
-            font-size: 28px;
-            color: #1a1a2e;
-            margin-bottom: 8px;
-            font-weight: 600;
+            font-size: 1.1rem;
+            color: #000;
+            font-weight: 800;
         }
 
         .forgot-header p {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.5;
+            color: #888;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            line-height: 1.4;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            color: #333;
+            margin-bottom: 6px;
+            color: #000;
             font-weight: 500;
-            font-size: 14px;
         }
 
         .form-group input {
             width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: border-color 0.2s, box-shadow 0.2s;
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            transition: border-color 0.2s;
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #a3a2a3;
         }
 
         .submit-btn {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            padding: 10px;
+            background: radial-gradient(circle at top left, #e6e3e5, #a3a2a3);
+            color: #000;
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 4px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s ease;
         }
 
         .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            background: rgb(228, 228, 228);
         }
 
         .back-link {
             text-align: center;
-            margin-top: 24px;
-            color: #666;
-            font-size: 14px;
+            margin-top: 20px;
+            color: #888;
         }
 
         .back-link a {
-            color: #667eea;
+            color: #000;
             text-decoration: none;
-            font-weight: 500;
         }
 
         .back-link a:hover {
@@ -110,13 +103,11 @@
         }
 
         .error-message {
-            background: #fee2e2;
-            border: 1px solid #fecaca;
+            background: #fff;
+            border-left: 2px solid #dc2626;
             color: #dc2626;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
+            padding: 10px 12px;
+            margin-bottom: 16px;
         }
 
         .error-list {
@@ -126,13 +117,11 @@
         }
 
         .status-message {
-            background: #dcfce7;
-            border: 1px solid #bbf7d0;
+            background: #fff;
+            border-left: 2px solid #16a34a;
             color: #16a34a;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
+            padding: 10px 12px;
+            margin-bottom: 16px;
         }
     </style>
 </head>
@@ -140,7 +129,7 @@
     <div class="forgot-container">
         <div class="forgot-header">
             <h1>Forgot Password</h1>
-            <p>Enter your email address and we'll send you a link to reset your password.</p>
+            <p>Enter your email and we'll send you a reset link.</p>
         </div>
 
         @if (session('status'))
@@ -163,13 +152,12 @@
             @csrf
 
             <div class="form-group">
-                <label for="email">Email Address</label>
+                <label for="email">Email</label>
                 <input 
                     type="email" 
                     id="email" 
                     name="email" 
                     value="{{ old('email') }}" 
-                    placeholder="Enter your email"
                     required 
                     autofocus
                 >
