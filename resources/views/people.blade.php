@@ -4,6 +4,392 @@
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/our_people.css') }}">
+<style>
+    .alert {
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        border-radius: 4px;
+    }
+
+    .alert-success {
+        background: #d1fae5;
+        color: #065f46;
+        border: 1px solid #a7f3d0;
+    }
+
+    .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        overflow: visible;
+    }
+
+    .search-container {
+        flex: 1;
+        max-width: 400px;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-family: 'Segoe UI', Helvetica;
+    }
+
+    .search-input:focus {
+        outline: none;
+        border-color: #a3a2a3;
+    }
+
+    .button-group {
+        margin-left: 20px;
+    }
+
+    .add-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: radial-gradient(circle at top left, #e6e3e5, #a3a2a3);
+        color: #000;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: 'Segoe UI', Helvetica;
+        font-size: 0.875rem;
+    }
+
+    .add-btn:hover {
+        background: #d1d1d1;
+    }
+
+    .add-btn img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .table-container {
+        background: white;
+        border-radius: 4px;
+        overflow: visible;
+        min-height: 400px;
+    }
+
+    .quotation-table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: visible;
+    }
+
+    .quotation-table th,
+    .quotation-table td {
+        padding: 12px 16px;
+        text-align: left;
+        border: none;
+    }
+
+    .quotation-table th {
+        background: #f8f9fa;
+        font-weight: 600;
+        color: #000;
+    }
+
+    .quotation-table tbody tr {
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .quotation-table tbody tr:last-child {
+        border-bottom: none;
+    }
+
+    .people-table tbody tr:hover {
+        background-color: #f5f5f5;
+        cursor: pointer;
+    }
+
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .status-badge.active {
+        background: #d1fae5;
+        color: #065f46;
+    }
+
+    .status-badge.inactive {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .action-btn {
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: 'Segoe UI', Helvetica;
+    }
+
+    .edit-btn {
+        background: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .edit-btn:hover {
+        background: #bbdefb;
+    }
+
+    .deactivate-btn {
+        background: #ffebee;
+        color: #d32f2f;
+    }
+
+    .deactivate-btn:hover {
+        background: #ffcdd2;
+    }
+
+    /* Actions Dropdown */
+    .actions-dropdown-wrapper {
+        position: relative;
+        display: inline-block;
+        overflow: visible;
+    }
+
+    .actions-dropdown-btn {
+        background: radial-gradient(circle at top left, #e6e3e5, #a3a2a3);
+        border: none;
+        border-radius: 4px;
+        padding: 6px 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .actions-dropdown-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    .actions-dropdown-btn img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .actions-dropdown-panel {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        margin-top: 4px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        min-width: 140px;
+        z-index: 1000;
+        padding: 8px 0;
+    }
+
+    .quotation-table tbody {
+        overflow: visible;
+    }
+
+    .quotation-table td {
+        overflow: visible;
+    }
+
+    .action-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        padding: 10px 16px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-family: 'Segoe UI', Helvetica;
+        color: #333;
+        text-align: left;
+    }
+
+    .action-item:hover {
+        background: #f5f5f5;
+    }
+
+    .action-item img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .action-item.deactivate {
+        color: #d32f2f;
+    }
+
+    .action-item.deactivate:hover {
+        background: #ffebee;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+    }
+
+    .empty-state img {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 16px;
+        opacity: 0.6;
+    }
+
+    .empty-state h3 {
+        color: #666;
+        margin-bottom: 8px;
+    }
+
+    .empty-state p {
+        color: #888;
+    }
+
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        overflow: auto;
+    }
+
+    .modal-content {
+        background: white;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+        max-height: 80vh;
+        overflow-y: auto;
+        margin: auto;
+        position: relative;
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .modal-header h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #000;
+    }
+
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #666;
+    }
+
+    .modal-body {
+        padding: 24px;
+    }
+
+    /* Form styles */
+    .form-group {
+        margin-bottom: 16px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        color: #000;
+        font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-family: 'Segoe UI', Helvetica;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #a3a2a3;
+    }
+
+    .error {
+        color: #dc2626;
+        font-size: 0.75rem;
+        margin-top: 4px;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px 16px;
+        border: none;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: 'Segoe UI', Helvetica;
+        font-size: 0.875rem;
+    }
+
+    .btn-primary {
+        background: #000;
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        background: #333;
+    }
+
+    .btn-secondary {
+        background: #f4f3f3;
+        color: #000;
+        border: 1px solid #e0e0e0;
+    }
+
+    .btn-secondary:hover {
+        background: #e0e0e0;
+    }
+</style>
 @endpush
 
 @section('content')
@@ -163,54 +549,18 @@
   </div>
 
   <div class="people-table-wrapper" data-view-section="client" style="position: relative; min-height: 300px; overflow: visible; display:none;">
-    @if(isset($partners) && count($partners))
-    <table class="people-table partners-table" data-table="client" style="position: relative;">
-      <thead>
-        <tr>
-          <th style="padding-right: 25px; width: 110px;">Client Code</th>
-          <th style="padding-right: 25px; width: 200px;">Name</th>
-          <th style="padding-right: 25px; width: 170px;">Primary Contact</th>
-          <th style="padding-right: 25px; width: 170px;">Email</th>
-          <th style="padding-right: 25px; width: 150px;">Phone</th>
-          <th style="padding-right: 25px; width: 200px;">Sites</th>
-          <th style="padding-right: 25px; width: 130px;">SLA Tier</th>
-          <th style="padding-right: 25px; width: 120px;">Headcount</th>
-          <th style="padding-right: 25px; width: 100px;">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($partners as $partner)
-        <tr>
-          <td>{{ $partner->code }}</td>
-          <td>
-            <div class="person-name">{{ $partner->name }}</div>
-          </td>
-          <td>{{ $partner->primary_contact }}</td>
-          <td>{{ $partner->email }}</td>
-          <td>{{ $partner->phone }}</td>
-          <td>{{ implode(', ', $partner->sites) }}</td>
-          <td>{{ $partner->sla_tier }}</td>
-          <td>{{ $partner->active_headcount }}</td>
-          <td>
-            <span class="status-pill {{ strtolower($partner->status) === 'active' ? 'active' : 'inactive' }}">
-              {{ $partner->status }}
-            </span>
-          </td>
-        </tr>
-        @endforeach
-      </tbody>
-    </table>
-    @else
-    <div class="empty-state">
-      <img src="{{ asset('images/empty_state.svg') }}" alt="No partners" />
-      <h3>No partners yet</h3>
-      <p>Use the "Add New" button to register your first client.</p>
-    </div>
-    @endif
+    <livewire:partners-component />
   </div>
 </section>
 @endsection
 
 @push('scripts')
 <script src="{{ asset('js/our_people.js') }}"></script>
+<script>
+    document.addEventListener('livewire:loaded', () => {
+        Livewire.on('closeModal', () => {
+            // This is handled by the component itself
+        });
+    });
+</script>
 @endpush

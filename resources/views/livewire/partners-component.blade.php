@@ -16,55 +16,69 @@
         </div>
         <div class="button-group">
             @can('create-partners')
-                <button wire:click="openCreateForm" class="add-btn">
-                    <img src="{{ asset('images/plus-solid.svg') }}" alt="Add">
-                    Add New
+                <button wire:click="openCreateForm" class="create-new-button">
+                    <img src="{{ asset('images/plus.svg') }}" alt="Add" class="plus-icon">
+                    <span class="create-new-text">Add Partner</span>
                 </button>
             @endcan
         </div>
     </div>
 
-    <div class="table-container">
+    <div class="people-table-wrapper" style="animation: none; opacity: 1; transform: none;">
         @if($this->partners->count() > 0)
-            <table class="quotation-table">
+            <table class="people-table">
                 <thead>
                     <tr>
-                        <th>Company</th>
-                        <th>Contact Person</th>
-                        <th>Contact Email</th>
-                        <th>Contact Phone</th>
-                        <th>Address</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th style="width: 40px;">#</th>
+                        <th style="padding-right: 25px; width: 120px;">Partner Code</th>
+                        <th style="padding-right: 25px; width: 180px;">Company</th>
+                        <th style="padding-right: 25px; width: 150px;">Contact Person</th>
+                        <th style="padding-right: 25px; width: 180px;">Contact Email</th>
+                        <th style="padding-right: 25px; width: 120px;">Contact Phone</th>
+                        <th style="padding-right: 25px; width: 180px;">Address</th>
+                        <th style="padding-right: 25px; width: 90px;">Headcount</th>
+                        <th style="padding-right: 25px; width: 90px;">Status</th>
+                        <th style="width: 60px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($this->partners as $partner)
-                        <tr>
+                    @foreach($this->partners as $index => $partner)
+                        <tr style="animation: none; opacity: 1; transform: none;">
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $partner->partner_code }}</td>
                             <td>{{ $partner->company_name }}</td>
-                            <td>{{ $partner->contact_person ?: '-' }}</td>
+                            <td>{{ $partner->contact_person ?: '—' }}</td>
                             <td>{{ $partner->contact_email }}</td>
-                            <td>{{ $partner->contact_phone ?: '-' }}</td>
-                            <td>{{ Str::limit($partner->company_address, 50) ?: '-' }}</td>
+                            <td>{{ $partner->contact_phone ?: '—' }}</td>
+                            <td>{{ Str::limit($partner->company_address, 50) ?: '—' }}</td>
+                            <td>_</td>
                             <td>
-                                <span class="status-badge {{ $partner->active ? 'active' : 'inactive' }}">
+                                <span class="status-pill {{ $partner->active ? 'active' : 'inactive' }}">
                                     {{ $partner->active ? 'Active' : 'Inactive' }}
                                 </span>
                             </td>
                             <td>
-                                <div class="action-buttons">
-                                    @can('edit-partners')
-                                        <button wire:click="openEditForm({{ $partner->id }})" class="action-btn edit-btn">
-                                            Edit
-                                        </button>
-                                    @endcan
-                                    @can('delete-partners')
-                                        <button wire:click="deactivatePartner({{ $partner->id }})"
-                                                wire:confirm="Are you sure you want to deactivate this partner?"
-                                                class="action-btn deactivate-btn">
-                                            Deactivate
-                                        </button>
-                                    @endcan
+                                <div class="actions-dropdown-wrapper" x-data="{ open: false }">
+                                    <button class="actions-dropdown-btn" @click="open = !open" @click.away="open = false">
+                                        <img src="{{ asset('images/bars-solid.svg') }}" alt="Actions">
+                                    </button>
+                                    <div class="actions-dropdown-panel" x-show="open" x-cloak>
+                                        @can('edit-partners')
+                                            <button class="action-item" wire:click="openEditForm({{ $partner->id }})" @click="open = false">
+                                                <img src="{{ asset('images/wrench.svg') }}" alt="Edit">
+                                                <span>Edit</span>
+                                            </button>
+                                        @endcan
+                                        @can('delete-partners')
+                                            <button class="action-item deactivate" 
+                                                    wire:click="deactivatePartner({{ $partner->id }})"
+                                                    wire:confirm="Are you sure you want to deactivate this partner?"
+                                                    @click="open = false">
+                                                <img src="{{ asset('images/xdelete.svg') }}" alt="Deactivate">
+                                                <span>Deactivate</span>
+                                            </button>
+                                        @endcan
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -80,8 +94,9 @@
     </div>
 
     <!-- Modal -->
-    <div wire:show="showForm" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
+    @if($showForm)
+    <div class="modal-overlay" wire:click.self="closeForm">
+        <div class="modal-content" wire:click.stop>
             <div class="modal-header">
                 <h3>{{ $editingPartner ? 'Edit Partner' : 'Add New Partner' }}</h3>
                 <button wire:click="closeForm" class="modal-close">&times;</button>
@@ -91,4 +106,5 @@
             </div>
         </div>
     </div>
+    @endif
 </div>
