@@ -19,11 +19,12 @@
                 style="width: 250px; height: 40px; line-height: 1.5;"
             >
                 <option value="">Select Partner</option>
+                <option value="all">All Partners</option>
                 @foreach($partners as $partner)
                     <option value="{{ $partner->id }}">{{ $partner->company_name }}</option>
                 @endforeach
             </select>
-            @if($selectedPartnerId)
+@if($selectedPartnerId)
             <div class="search-container">
                 <input
                     type="text"
@@ -36,7 +37,7 @@
         </div>
         <div class="button-group">
             @can('create-sites')
-                <button wire:click="openCreateForm" class="create-new-button" @if(!$selectedPartnerId) disabled style="opacity: 0.5; cursor: not-allowed;" @endif>
+<button wire:click="openCreateForm" class="create-new-button" @if(!$selectedPartnerId || $selectedPartnerId === 'all') disabled style="opacity: 0.5; cursor: not-allowed;" @endif>
                     <img src="{{ asset('images/plus.svg') }}" alt="Add" class="plus-icon">
                     <span class="create-new-text">Add Site</span>
                 </button>
@@ -45,7 +46,7 @@
     </div>
 
     <div class="people-table-wrapper" style="animation: none; opacity: 1; transform: none;">
-        @if(!$selectedPartnerId)
+@if(!$selectedPartnerId)
             <div class="empty-state">
                 <h3>Select a Partner</h3>
                 <p>Please select a partner from the dropdown above to view and manage their sites.</p>
@@ -55,6 +56,9 @@
                 <thead>
                     <tr>
                         <th style="width: 40px;">#</th>
+                        @if($selectedPartnerId === 'all')
+                        <th style="padding-right: 25px; width: 180px;">Partner</th>
+                        @endif
                         <th style="padding-right: 25px; width: 200px;">Site Name</th>
                         <th style="padding-right: 25px; width: 250px;">Address</th>
                         <th style="padding-right: 25px;">Description</th>
@@ -66,6 +70,9 @@
                     @foreach($sites as $index => $site)
                         <tr style="animation: none; opacity: 1; transform: none;">
                             <td>{{ $index + 1 }}</td>
+                            @if($selectedPartnerId === 'all')
+                            <td>{{ $site->partner->company_name ?? '—' }}</td>
+                            @endif
                             <td>{{ $site->name }}</td>
                             <td>{{ $site->address ?: '—' }}</td>
                             <td>{{ Str::limit($site->description, 80) ?: '—' }}</td>
@@ -115,7 +122,7 @@
     <div class="modal-overlay" wire:click.self="closeForm">
         <div class="modal-content" wire:click.stop>
             <div class="modal-header">
-                <h3>{{ $editingSite ? 'Edit Site' : 'Add New Site' }}</h3>
+                <h3>{{ $editingSite ? 'Edit Site' : 'Add New Site for ' . $partners->firstWhere('id', $selectedPartnerId)?->company_name }}</h3>
                 <button wire:click="closeForm" class="modal-close">&times;</button>
             </div>
             <div class="modal-body">
