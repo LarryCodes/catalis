@@ -23,7 +23,10 @@
       <div class="nav-icon" data-key="settings">
         <img src="{{ asset('images/sliders-solid.svg') }}" alt="Settings">
       </div>
-      <div class="nav-icon" data-key="logout">
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+      </form>
+      <div class="nav-icon" data-key="logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <img src="{{ asset('images/logout.svg') }}" alt="Logout">
       </div>
     </aside>
@@ -322,8 +325,6 @@
 
         const key = icon.dataset.key;
         if (key === 'logout') {
-          localStorage.removeItem('menuPath');
-          window.location.href = '{{ url('/logout') }}';
           return;
         }
 
