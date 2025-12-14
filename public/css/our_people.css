@@ -525,6 +525,13 @@ input[type="checkbox"] {
   margin-top: 0px;
 }
 
+.people-table-wrapper[style*="display:none"],
+.people-table-wrapper[style*="display: none"] {
+  animation: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
 .people-table tbody tr {
   animation: slideInLeft 0.4s ease forwards;
   opacity: 0;

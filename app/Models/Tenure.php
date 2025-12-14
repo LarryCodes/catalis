@@ -16,6 +16,11 @@ class Tenure extends Model
         'active' => 'boolean',
     ];
 
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('active', true);

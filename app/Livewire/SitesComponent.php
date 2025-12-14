@@ -89,9 +89,13 @@ class SitesComponent extends Component
         $sites = collect();
         if ($this->selectedPartnerId) {
             if ($this->selectedPartnerId === 'all') {
-                $query = Site::with('partner')->active();
+                $query = Site::with('partner')
+                    ->withCount(['employees' => fn($q) => $q->where('active', true)])
+                    ->active();
             } else {
-                $query = Site::where('partner_id', $this->selectedPartnerId)->active();
+                $query = Site::where('partner_id', $this->selectedPartnerId)
+                    ->withCount(['employees' => fn($q) => $q->where('active', true)])
+                    ->active();
             }
             
             if ($this->search) {

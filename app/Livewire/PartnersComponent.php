@@ -36,6 +36,9 @@ class PartnersComponent extends Component
     public function getPartnersProperty()
     {
         return Partner::active()
+            ->withCount(['employees' => function ($query) {
+                $query->where('active', true);
+            }])
             ->when($this->search, function ($query) {
                 $query->where('company_name', 'like', '%' . $this->search . '%')
                       ->orWhere('contact_person', 'like', '%' . $this->search . '%')

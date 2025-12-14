@@ -50,6 +50,12 @@ class RolesAndPermissionsSeeder extends Seeder
             'edit-tenures',
             'delete-tenures',
             
+            // Employee permissions
+            'view-employees',
+            'create-employees',
+            'edit-employees',
+            'delete-employees',
+            
             // Payroll permissions
             'view-payroll',
             'run-payroll',

@@ -60,6 +60,11 @@ class Partner extends Model
         return $this->hasMany(Department::class);
     }
 
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
+
     public function scopeActive($query)
     {
         return $query->where('active', true);

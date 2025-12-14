@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div class="people-table-wrapper" style="animation: none; opacity: 1; transform: none;">
+    <div>
         @if($this->partners->count() > 0)
             <table class="people-table">
                 <thead>
@@ -51,7 +51,7 @@
                             <td>{{ $partner->contact_email }}</td>
                             <td>{{ $partner->contact_phone ?: '—' }}</td>
                             <td>{{ Str::limit($partner->company_address, 50) ?: '—' }}</td>
-                            <td>_</td>
+                            <td>{{ $partner->employees_count }}</td>
                             <td>
                                 <span class="status-pill {{ $partner->active ? 'active' : 'inactive' }}">
                                     {{ $partner->active ? 'Active' : 'Inactive' }}

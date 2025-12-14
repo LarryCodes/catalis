@@ -45,7 +45,7 @@
         </div>
     </div>
 
-    <div class="people-table-wrapper" style="animation: none; opacity: 1; transform: none;">
+    <div>
         @if(!$selectedPartnerId)
             <div class="empty-state">
                 <h3>Select a Partner</h3>
@@ -75,7 +75,7 @@
                             @endif
                             <td>{{ $department->name }}</td>
                             <td>{{ Str::limit($department->description, 80) ?: '—' }}</td>
-                            <td>_</td>
+                            <td>{{ $department->employees_count }}</td>
                             <td>
                                 <span class="status-pill {{ $department->active ? 'active' : 'inactive' }}">
                                     {{ $department->active ? 'Active' : 'Inactive' }}

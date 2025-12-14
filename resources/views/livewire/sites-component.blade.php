@@ -45,8 +45,8 @@
         </div>
     </div>
 
-    <div class="people-table-wrapper" style="animation: none; opacity: 1; transform: none;">
-@if(!$selectedPartnerId)
+    <div>
+        @if(!$selectedPartnerId)
             <div class="empty-state">
                 <h3>Select a Partner</h3>
                 <p>Please select a partner from the dropdown above to view and manage their sites.</p>
@@ -62,6 +62,7 @@
                         <th style="padding-right: 25px; width: 200px;">Site Name</th>
                         <th style="padding-right: 25px; width: 250px;">Address</th>
                         <th style="padding-right: 25px;">Description</th>
+                        <th style="padding-right: 25px; width: 100px;">Employees</th>
                         <th style="padding-right: 25px; width: 90px;">Status</th>
                         <th style="width: 60px;">Actions</th>
                     </tr>
@@ -76,6 +77,7 @@
                             <td>{{ $site->name }}</td>
                             <td>{{ $site->address ?: '—' }}</td>
                             <td>{{ Str::limit($site->description, 80) ?: '—' }}</td>
+                            <td>{{ $site->employees_count }}</td>
                             <td>
                                 <span class="status-pill {{ $site->active ? 'active' : 'inactive' }}">
                                     {{ $site->active ? 'Active' : 'Inactive' }}

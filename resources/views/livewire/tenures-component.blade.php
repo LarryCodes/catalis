@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <div class="people-table-wrapper" style="animation: none; opacity: 1; transform: none;">
+    <div>
         @if($tenures->count() > 0)
             <table class="people-table">
                 <thead>
@@ -49,7 +49,7 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $tenure->name }}</td>
                             <td>{{ Str::limit($tenure->description, 80) ?: '—' }}</td>
-                            <td>_</td>
+                            <td>{{ $tenure->employees_count }}</td>
                             <td>
                                 <span class="status-pill {{ $tenure->active ? 'active' : 'inactive' }}">
                                     {{ $tenure->active ? 'Active' : 'Inactive' }}

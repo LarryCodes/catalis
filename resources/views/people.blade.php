@@ -395,6 +395,133 @@
     .btn-secondary:hover {
         background: #e0e0e0;
     }
+
+    /* Employee Modal - wider */
+    .employee-modal {
+        max-width: 700px;
+        max-height: 90vh;
+    }
+
+    /* Accordion Styles */
+    .accordion-section {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        overflow: hidden;
+    }
+
+    .accordion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 14px 16px;
+        background: #f8f9fa;
+        border: none;
+        cursor: pointer;
+        font-family: 'Segoe UI', Helvetica;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #333;
+        text-align: left;
+    }
+
+    .accordion-header:hover {
+        background: #f0f0f0;
+    }
+
+    .accordion-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .accordion-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e0e0e0;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .accordion-status .status-complete {
+        color: #059669;
+        font-weight: bold;
+    }
+
+    .accordion-status .status-incomplete {
+        color: #dc2626;
+        font-size: 0.75rem;
+    }
+
+    .accordion-status .status-optional {
+        color: #6b7280;
+        font-size: 0.75rem;
+    }
+
+    .accordion-content {
+        padding: 16px;
+        border-top: 1px solid #e0e0e0;
+        background: white;
+    }
+
+    /* Form Row for side-by-side fields */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .form-row .form-group {
+        margin-bottom: 12px;
+    }
+
+    .form-group select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-family: 'Segoe UI', Helvetica;
+        background: white;
+    }
+
+    .form-group select:focus {
+        outline: none;
+        border-color: #a3a2a3;
+    }
+
+    .form-group select:disabled {
+        background: #f5f5f5;
+        cursor: not-allowed;
+    }
+
+    /* Checkbox cells */
+    .checkbox-cell {
+        width: 20px;
+        text-align: center;
+    }
+
+    .checkbox-cell input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }
+
+    /* Person name and meta */
+    .person-name {
+        font-weight: 500;
+    }
+
+    .person-meta {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 2px;
+    }
 </style>
 @endpush
 
@@ -492,66 +619,7 @@
   </div>
 
   <div class="people-table-wrapper" data-view-section="employee" style="position: relative; min-height: 300px; overflow: visible;">
-    @if(isset($people) && count($people))
-    <table class="people-table" data-table="employee" style="position: relative;">
-      <thead>
-        <tr>
-          <th class="checkbox-cell" style="width: 20px;">
-            <input type="checkbox" id="select-all" title="Select All" />
-          </th>
-          <th style="padding-right: 25px; width: 120px;">Employee #</th>
-          <th style="padding-right: 25px; width: 180px;">Full Name</th>
-          <th style="padding-right: 25px; width: 70px;">Gender</th>
-          <th style="padding-right: 25px; width: 120px;">DOB</th>
-          <th style="padding-right: 25px; width: 140px;">Department</th>
-          <th style="padding-right: 25px; width: 140px;">Site</th>
-          <th style="padding-right: 25px; width: 120px;">Employee Type</th>
-          <th style="padding-right: 25px; width: 140px;">Contact</th>
-          <th style="padding-right: 25px; width: 160px;">Address</th>
-          <th style="padding-right: 25px; width: 110px;">Daily Wage</th>
-          <th style="padding-right: 25px; width: 90px;">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($people as $person)
-        <tr>
-          <td class="checkbox-cell">
-            <input type="checkbox" class="quote-checkbox" name="select_person" value="{{ $person->id }}">
-          </td>
-          <td>{{ $person->employee_number }}</td>
-          <td>
-            <div class="person-name">{{ $person->full_name }}</div>
-            <div class="person-meta">{{ $person->nationality }}</div>
-          </td>
-          <td>{{ $person->gender }}</td>
-          <td>{{ optional($person->date_of_birth)->format('d M Y') ?? '—' }}</td>
-          <td>{{ $person->department->name ?? '—' }}</td>
-          <td>{{ $person->site->site_name ?? '—' }}</td>
-          <td>{{ $person->employeeType->name ?? '—' }}</td>
-          <td>
-            <div>{{ $person->phone }}</div>
-            @if($person->email)
-            <div class="person-meta">{{ $person->email }}</div>
-            @endif
-          </td>
-          <td>{{ $person->address }}</td>
-          <td>UGX {{ number_format($person->daily_wage, 2) }}</td>
-          <td>
-            <span class="status-pill {{ $person->is_active ? 'active' : 'inactive' }}">
-              {{ $person->is_active ? 'Active' : 'Inactive' }}
-            </span>
-          </td>
-        </tr>
-        @endforeach
-      </tbody>
-    </table>
-    @else
-    <div class="empty-state">
-      <img src="{{ asset('images/empty_state.svg') }}" alt="No employees" />
-      <h3>No employees yet</h3>
-      <p>Use the "Add New" button to create your first employee record.</p>
-    </div>
-    @endif
+    <livewire:employees-component />
   </div>
 
   <div class="people-table-wrapper" data-view-section="client" style="position: relative; min-height: 300px; overflow: visible; display:none;">

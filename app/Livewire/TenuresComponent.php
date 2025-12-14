@@ -71,7 +71,8 @@ class TenuresComponent extends Component
 
     public function render()
     {
-        $query = Tenure::active();
+        $query = Tenure::active()
+            ->withCount(['employees' => fn($q) => $q->where('active', true)]);
         
         if ($this->search) {
             $query->where(function ($q) {

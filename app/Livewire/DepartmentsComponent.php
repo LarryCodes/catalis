@@ -88,9 +88,13 @@ class DepartmentsComponent extends Component
         $departments = collect();
         if ($this->selectedPartnerId) {
             if ($this->selectedPartnerId === 'all') {
-                $query = Department::with('partner')->active();
+                $query = Department::with('partner')
+                    ->withCount(['employees' => fn($q) => $q->where('active', true)])
+                    ->active();
             } else {
-                $query = Department::where('partner_id', $this->selectedPartnerId)->active();
+                $query = Department::where('partner_id', $this->selectedPartnerId)
+                    ->withCount(['employees' => fn($q) => $q->where('active', true)])
+                    ->active();
             }
             
             if ($this->search) {
