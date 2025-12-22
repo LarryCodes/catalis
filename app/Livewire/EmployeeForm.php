@@ -55,7 +55,7 @@ class EmployeeForm extends Component
     public $management_fee = '';
 
     // Accordion state
-    public $openSections = ['employment' => true, 'personal' => false, 'contact' => false, 'nextOfKin' => false, 'banking' => false, 'compensation' => false];
+    public $openSections = ['employment' => true, 'personal' => false, 'contact' => false, 'nextOfKin' => false, 'remuneration' => false];
 
     public function rules()
     {

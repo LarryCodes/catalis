@@ -53,21 +53,16 @@ function toggleActions() {
     });
   }
 
-    const createNewBtn = document.getElementById('create-new-button');
-    const createNewPanel = document.getElementById('create-new-panel');
+    // Create buttons - one per entity type, shown based on active tab
+    const createButtons = document.querySelectorAll('.create-new-button[data-create-for]');
     
-    if (createNewBtn) {
-        createNewBtn.addEventListener('click', (e) => {
+    // Attach click handlers to all create buttons
+    createButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
             e.stopPropagation();
+            const createFor = btn.dataset.createFor;
             
-            // Get the active tab
-            const activeTab = document.querySelector('.view-tab.active');
-            if (!activeTab) return;
-            
-            const activeView = activeTab.dataset.view;
-            
-            // Dispatch event based on active tab
-            switch(activeView) {
+            switch(createFor) {
                 case 'client':
                     Livewire.dispatch('openCreatePartner');
                     break;
@@ -83,11 +78,14 @@ function toggleActions() {
                 case 'employee':
                     Livewire.dispatch('openCreateEmployee');
                     break;
-                case 'team':
-                    // TODO: Implement teams
-                    console.log('Teams not yet implemented');
-                    break;
             }
+        });
+    });
+
+    // Function to show/hide create buttons based on active view
+    function updateCreateButtons(activeView) {
+        createButtons.forEach(btn => {
+            btn.style.display = btn.dataset.createFor === activeView ? '' : 'none';
         });
     }
 
@@ -137,13 +135,20 @@ function toggleActions() {
             
             const view = tab.dataset.view;
             toggleViewSections(view);
+            updateCreateButtons(view);
         });
     });
     
-    const activeTab = document.querySelector('.view-tab.active');
+    // Find active tab, or activate the first available tab
+    let activeTab = document.querySelector('.view-tab.active');
+    if (!activeTab && viewTabs.length > 0) {
+        activeTab = viewTabs[0];
+        activeTab.classList.add('active');
+    }
     if (activeTab) {
         updateSlidingBackground(activeTab);
         toggleViewSections(activeTab.dataset.view);
+        updateCreateButtons(activeTab.dataset.view);
     }
 
   // Search inputs for other views

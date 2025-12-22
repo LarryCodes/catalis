@@ -96,19 +96,91 @@ class RolesAndPermissionsSeeder extends Seeder
         $superAdmin = Role::firstOrCreate(['name' => 'Super Admin']);
         $superAdmin->givePermissionTo(Permission::all());
 
+        // HR Manager - can manage employees, partners, sites, departments, tenures, payroll, attendance, recruitment, performance, reports
+        $hrManager = Role::firstOrCreate(['name' => 'HR Manager']);
+        $hrManager->givePermissionTo([
+            // Full employee management
+            'view-employees', 'create-employees', 'edit-employees', 'delete-employees',
+            // Full partner management
+            'view-partners', 'create-partners', 'edit-partners', 'delete-partners',
+            // Full site management
+            'view-sites', 'create-sites', 'edit-sites', 'delete-sites',
+            // Full department management
+            'view-departments', 'create-departments', 'edit-departments', 'delete-departments',
+            // Full tenure management
+            'view-tenures', 'create-tenures', 'edit-tenures', 'delete-tenures',
+            // Payroll - view and run, but not approve
+            'view-payroll', 'run-payroll', 'edit-payroll',
+            // Full attendance management
+            'view-attendance', 'manage-attendance', 'approve-attendance',
+            // Full recruitment
+            'view-recruitment', 'manage-recruitment',
+            // Full performance management
+            'view-performance', 'manage-performance', 'approve-appraisals',
+            // Reports
+            'view-reports', 'export-reports',
+        ]);
+
+        // HR Officer - view and create, limited edit/delete, no approvals
+        $hrOfficer = Role::firstOrCreate(['name' => 'HR Officer']);
+        $hrOfficer->givePermissionTo([
+            // View and create employees only
+            'view-employees', 'create-employees', 'edit-employees',
+            // View partners only
+            'view-partners',
+            // View sites only
+            'view-sites',
+            // View departments only
+            'view-departments',
+            // View tenures only
+            'view-tenures',
+            // View payroll only
+            'view-payroll',
+            // View and manage attendance (no approve)
+            'view-attendance', 'manage-attendance',
+            // View recruitment only
+            'view-recruitment',
+            // View performance only
+            'view-performance',
+            // View reports only
+            'view-reports',
+        ]);
+
         // Create default Super Admin user
-        $user = User::firstOrCreate(
+        $superAdminUser = User::firstOrCreate(
             ['email' => 'admin@catalis.hr'],
             [
                 'name' => 'Larry Okongo',
                 'password' => Hash::make('password'),
             ]
         );
-        $user->assignRole('Super Admin');
-        $user->givePermissionTo(Permission::all()); // Assign all permissions directly to user
+        $superAdminUser->assignRole('Super Admin');
+        $superAdminUser->givePermissionTo(Permission::all());
+
+        // Create HR Manager user
+        $hrManagerUser = User::firstOrCreate(
+            ['email' => 'manager@catalis.hr'],
+            [
+                'name' => 'Jane Wanjiku',
+                'password' => Hash::make('password'),
+            ]
+        );
+        $hrManagerUser->assignRole('HR Manager');
+
+        // Create HR Officer user
+        $hrOfficerUser = User::firstOrCreate(
+            ['email' => 'officer@catalis.hr'],
+            [
+                'name' => 'John Kamau',
+                'password' => Hash::make('password'),
+            ]
+        );
+        $hrOfficerUser->assignRole('HR Officer');
 
         $this->command->info('Roles and permissions seeded successfully!');
-        $this->command->info('Default admin user created: admin@catalis.hr / password');
-        $this->command->info('Super Admin has all permissions assigned directly and through role.');
+        $this->command->info('Users created:');
+        $this->command->info('  Super Admin: admin@catalis.hr / password');
+        $this->command->info('  HR Manager:  manager@catalis.hr / password');
+        $this->command->info('  HR Officer:  officer@catalis.hr / password');
     }
 }

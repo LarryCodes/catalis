@@ -532,11 +532,21 @@
 
     <div class="people-controls">
       <div class="views-selector">
+        @can('view-partners')
         <button class="view-tab" data-view="client">Partners</button>
+        @endcan
+        @can('view-sites')
         <button class="view-tab" data-view="site">Sites</button>
+        @endcan
+        @can('view-departments')
         <button class="view-tab" data-view="department">Departments</button>
+        @endcan
+        @can('view-tenures')
         <button class="view-tab" data-view="employee-type">Tenures</button>
+        @endcan
+        @can('view-employees')
         <button class="view-tab active" data-view="employee">Employees</button>
+        @endcan
         <button class="view-tab" data-view="team">Teams</button>
       </div>
 
@@ -608,10 +618,36 @@
       </button>
 
       <div class="people-actions-group">
-        <button class="create-new-button" id="create-new-button">
+        @can('create-employees')
+        <button class="create-new-button" id="create-new-button" data-create-for="employee">
           <img src="{{ asset('images/plus.svg') }}" alt="Plus" class="plus-icon" />
           <span class="create-new-text">Add New</span>
         </button>
+        @endcan
+        @can('create-partners')
+        <button class="create-new-button" id="create-partner-button" data-create-for="client" style="display: none;">
+          <img src="{{ asset('images/plus.svg') }}" alt="Plus" class="plus-icon" />
+          <span class="create-new-text">Add New</span>
+        </button>
+        @endcan
+        @can('create-sites')
+        <button class="create-new-button" id="create-site-button" data-create-for="site" style="display: none;">
+          <img src="{{ asset('images/plus.svg') }}" alt="Plus" class="plus-icon" />
+          <span class="create-new-text">Add New</span>
+        </button>
+        @endcan
+        @can('create-departments')
+        <button class="create-new-button" id="create-department-button" data-create-for="department" style="display: none;">
+          <img src="{{ asset('images/plus.svg') }}" alt="Plus" class="plus-icon" />
+          <span class="create-new-text">Add New</span>
+        </button>
+        @endcan
+        @can('create-tenures')
+        <button class="create-new-button" id="create-tenure-button" data-create-for="employee-type" style="display: none;">
+          <img src="{{ asset('images/plus.svg') }}" alt="Plus" class="plus-icon" />
+          <span class="create-new-text">Add New</span>
+        </button>
+        @endcan
         <div class="people-actions" id="people-actions" style="display: none;">
           <button id="deactivate-selected" title="Deactivate">
             <img src="{{ asset('images/deactivate.svg') }}" alt="Deactivate" />

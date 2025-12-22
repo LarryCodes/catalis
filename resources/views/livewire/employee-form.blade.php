@@ -225,22 +225,34 @@
         </div>
     </div>
 
-    <!-- Banking Details Section -->
+    <!-- Remuneration Details Section -->
     <div class="accordion-section">
-        <button type="button" class="accordion-header" wire:click="toggleSection('banking')">
+        <button type="button" class="accordion-header" wire:click="toggleSection('remuneration')">
             <span class="accordion-title">
-                <span class="accordion-icon">{{ $openSections['banking'] ? '−' : '+' }}</span>
-                Banking Details
+                <span class="accordion-icon">{{ $openSections['remuneration'] ? '−' : '+' }}</span>
+                Remuneration Details
             </span>
             <span class="accordion-status">
-                @if($bank_name && $bank_account_number)
+                @if($daily_wage)
                     <span class="status-complete">✓</span>
                 @else
-                    <span class="status-optional">Optional</span>
+                    <span class="status-incomplete">Required</span>
                 @endif
             </span>
         </button>
-        <div class="accordion-content" x-show="$wire.openSections.banking" x-collapse>
+        <div class="accordion-content" x-show="$wire.openSections.remuneration" x-collapse>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="daily_wage">Daily Wage (UGX) *</label>
+                    <input type="number" id="daily_wage" wire:model="daily_wage" placeholder="Enter daily wage" step="0.01" min="0">
+                    @error('daily_wage') <span class="error">{{ $message }}</span> @enderror
+                </div>
+                <div class="form-group">
+                    <label for="management_fee">Management Fee (UGX)</label>
+                    <input type="number" id="management_fee" wire:model="management_fee" placeholder="Enter management fee" step="0.01" min="0">
+                    @error('management_fee') <span class="error">{{ $message }}</span> @enderror
+                </div>
+            </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="bank_name">Bank Name</label>
@@ -263,37 +275,6 @@
                     <label for="bank_account_number">Account Number</label>
                     <input type="text" id="bank_account_number" wire:model="bank_account_number" placeholder="Enter account number">
                     @error('bank_account_number') <span class="error">{{ $message }}</span> @enderror
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Compensation Section -->
-    <div class="accordion-section">
-        <button type="button" class="accordion-header" wire:click="toggleSection('compensation')">
-            <span class="accordion-title">
-                <span class="accordion-icon">{{ $openSections['compensation'] ? '−' : '+' }}</span>
-                Compensation
-            </span>
-            <span class="accordion-status">
-                @if($daily_wage)
-                    <span class="status-complete">✓</span>
-                @else
-                    <span class="status-incomplete">Required</span>
-                @endif
-            </span>
-        </button>
-        <div class="accordion-content" x-show="$wire.openSections.compensation" x-collapse>
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="daily_wage">Daily Wage (UGX) *</label>
-                    <input type="number" id="daily_wage" wire:model="daily_wage" placeholder="Enter daily wage" step="0.01" min="0">
-                    @error('daily_wage') <span class="error">{{ $message }}</span> @enderror
-                </div>
-                <div class="form-group">
-                    <label for="management_fee">Management Fee (UGX)</label>
-                    <input type="number" id="management_fee" wire:model="management_fee" placeholder="Enter management fee" step="0.01" min="0">
-                    @error('management_fee') <span class="error">{{ $message }}</span> @enderror
                 </div>
             </div>
         </div>
