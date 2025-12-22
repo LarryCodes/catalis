@@ -5,24 +5,6 @@
         </div>
     @endif
 
-    <div class="controls">
-        <div class="search-container">
-            <input
-                type="text"
-                wire:model.live.debounce.300ms="search"
-                placeholder="Search partners..."
-                class="search-input"
-            >
-        </div>
-        <div class="button-group">
-            @can('create-partners')
-                <button wire:click="openCreateForm" class="create-new-button">
-                    <img src="{{ asset('images/plus.svg') }}" alt="Add" class="plus-icon">
-                    <span class="create-new-text">Add Partner</span>
-                </button>
-            @endcan
-        </div>
-    </div>
 
     <div>
         @if($this->partners->count() > 0)

@@ -24,24 +24,6 @@
                     <option value="{{ $partner->id }}">{{ $partner->company_name }}</option>
                 @endforeach
             </select>
-            @if($selectedPartnerId)
-            <div class="search-container">
-                <input
-                    type="text"
-                    wire:model.live.debounce.300ms="search"
-                    placeholder="Search departments..."
-                    class="search-input"
-                >
-            </div>
-            @endif
-        </div>
-        <div class="button-group">
-            @can('create-departments')
-                <button wire:click="openCreateForm" class="create-new-button" @if(!$selectedPartnerId || $selectedPartnerId === 'all') disabled style="opacity: 0.5; cursor: not-allowed;" @endif>
-                    <img src="{{ asset('images/plus.svg') }}" alt="Add" class="plus-icon">
-                    <span class="create-new-text">Add Department</span>
-                </button>
-            @endcan
         </div>
     </div>
 

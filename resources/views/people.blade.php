@@ -558,9 +558,45 @@
           <input 
             type="search" 
             name="partner_search" 
-            placeholder="Search partners" 
+            placeholder="Search partners..." 
             class="search-input" 
             data-search-view="client"
+          >
+          <img src="{{ asset('images/filter.svg') }}" alt="Filter Icon" class="search-filter-icon" />
+        </div>
+      </form>
+      <form action="#" method="get" class="search-form" data-search-form="site" style="display: none;">
+        <div class="search-container">
+          <input 
+            type="search" 
+            name="site_search" 
+            placeholder="Search sites..." 
+            class="search-input" 
+            data-search-view="site"
+          >
+          <img src="{{ asset('images/filter.svg') }}" alt="Filter Icon" class="search-filter-icon" />
+        </div>
+      </form>
+      <form action="#" method="get" class="search-form" data-search-form="department" style="display: none;">
+        <div class="search-container">
+          <input 
+            type="search" 
+            name="department_search" 
+            placeholder="Search departments..." 
+            class="search-input" 
+            data-search-view="department"
+          >
+          <img src="{{ asset('images/filter.svg') }}" alt="Filter Icon" class="search-filter-icon" />
+        </div>
+      </form>
+      <form action="#" method="get" class="search-form" data-search-form="employee-type" style="display: none;">
+        <div class="search-container">
+          <input 
+            type="search" 
+            name="tenure_search" 
+            placeholder="Search tenures..." 
+            class="search-input" 
+            data-search-view="employee-type"
           >
           <img src="{{ asset('images/filter.svg') }}" alt="Filter Icon" class="search-filter-icon" />
         </div>
@@ -572,40 +608,10 @@
       </button>
 
       <div class="people-actions-group">
-        <div class="create-new-wrapper" id="create-new-wrapper">
-          <button class="create-new-button" id="create-new-button">
-            <img src="{{ asset('images/plus.svg') }}" alt="Plus" class="plus-icon" />
-            <span class="create-new-text">Add New</span>
-          </button>
-          <div class="create-new-panel" id="create-new-panel">
-            <div class="options-grid">
-              <button class="option-item" data-action="client">
-                <img src="{{ asset('images/handshake.svg') }}" alt="Client" />
-                <p style="font-size: 0.87rem; font-weight: 600;">Partner</p>
-              </button>
-              <button class="option-item" data-action="site">
-                <img src="{{ asset('images/site.svg') }}" alt="Site" />
-                <p style="font-size: 0.87rem; font-weight: 600;">Site</p>
-              </button>
-              <button class="option-item" data-action="department">
-                <img src="{{ asset('images/department.svg') }}" alt="Department" />
-                <p style="font-size: 0.87rem; font-weight: 600;">Department</p>
-              </button>
-              <button class="option-item" data-action="employee-type">
-                <img src="{{ asset('images/employee_type.svg') }}" alt="Employee Type" />
-                <p style="font-size: 0.87rem; font-weight: 600;">Tenure</p>
-              </button>
-              <button class="option-item" data-action="employee">
-                <img src="{{ asset('images/employee_add.svg') }}" alt="Employee" />
-                <p style="font-size: 0.87rem; font-weight: 600;">Employee</p>
-              </button>
-              <button class="option-item" data-action="team">
-                <img src="{{ asset('images/team.svg') }}" alt="Team" />
-                <p style="font-size: 0.87rem; font-weight: 600;">Team</p>
-              </button>
-            </div>
-          </div>
-        </div>
+        <button class="create-new-button" id="create-new-button">
+          <img src="{{ asset('images/plus.svg') }}" alt="Plus" class="plus-icon" />
+          <span class="create-new-text">Add New</span>
+        </button>
         <div class="people-actions" id="people-actions" style="display: none;">
           <button id="deactivate-selected" title="Deactivate">
             <img src="{{ asset('images/deactivate.svg') }}" alt="Deactivate" />

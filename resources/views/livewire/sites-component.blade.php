@@ -12,11 +12,11 @@
     @endif
 
     <div class="controls">
-        <div style="display: flex; gap: 12px; align-items: center; flex: 1;">
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; flex: 1;">
             <select 
                 wire:model.live="selectedPartnerId" 
                 class="search-input"
-                style="width: 250px; height: 40px; line-height: 1.5;"
+                style="width: 200px;"
             >
                 <option value="">Select Partner</option>
                 <option value="all">All Partners</option>
@@ -24,16 +24,6 @@
                     <option value="{{ $partner->id }}">{{ $partner->company_name }}</option>
                 @endforeach
             </select>
-@if($selectedPartnerId)
-            <div class="search-container">
-                <input
-                    type="text"
-                    wire:model.live.debounce.300ms="search"
-                    placeholder="Search sites..."
-                    class="search-input"
-                >
-            </div>
-            @endif
         </div>
         <div class="button-group">
             @can('create-sites')

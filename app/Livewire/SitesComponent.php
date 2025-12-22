@@ -24,6 +24,18 @@ class SitesComponent extends Component
         }
     }
 
+    #[On('searchSites')]
+    public function handleSearch($search)
+    {
+        $this->search = $search;
+    }
+
+    #[On('openCreateSite')]
+    public function handleOpenCreateForm()
+    {
+        $this->openCreateForm();
+    }
+
     #[On('closeForm')]
     public function handleCloseForm()
     {

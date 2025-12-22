@@ -22,6 +22,18 @@ class PartnersComponent extends Component
         }
     }
 
+    #[On('searchPartners')]
+    public function handleSearch($search)
+    {
+        $this->search = $search;
+    }
+
+    #[On('openCreatePartner')]
+    public function handleOpenCreateForm()
+    {
+        $this->openCreateForm();
+    }
+
     #[On('closeForm')]
     public function handleCloseForm()
     {

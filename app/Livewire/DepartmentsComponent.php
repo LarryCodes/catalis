@@ -24,6 +24,18 @@ class DepartmentsComponent extends Component
         }
     }
 
+    #[On('searchDepartments')]
+    public function handleSearch($search)
+    {
+        $this->search = $search;
+    }
+
+    #[On('openCreateDepartment')]
+    public function handleOpenCreateForm()
+    {
+        $this->openCreateForm();
+    }
+
     #[On('closeForm')]
     public function handleCloseForm()
     {

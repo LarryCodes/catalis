@@ -35,6 +35,18 @@ class EmployeesComponent extends Component
         }
     }
 
+    #[On('searchEmployees')]
+    public function handleSearch($search)
+    {
+        $this->search = $search;
+    }
+
+    #[On('openCreateEmployee')]
+    public function handleOpenCreateForm()
+    {
+        $this->openCreateForm();
+    }
+
     #[On('closeForm')]
     public function handleCloseForm()
     {

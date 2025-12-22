@@ -56,28 +56,40 @@ function toggleActions() {
     const createNewBtn = document.getElementById('create-new-button');
     const createNewPanel = document.getElementById('create-new-panel');
     
-    if (createNewBtn && createNewPanel) {
+    if (createNewBtn) {
         createNewBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            createNewPanel.classList.toggle('show');
+            
+            // Get the active tab
+            const activeTab = document.querySelector('.view-tab.active');
+            if (!activeTab) return;
+            
+            const activeView = activeTab.dataset.view;
+            
+            // Dispatch event based on active tab
+            switch(activeView) {
+                case 'client':
+                    Livewire.dispatch('openCreatePartner');
+                    break;
+                case 'site':
+                    Livewire.dispatch('openCreateSite');
+                    break;
+                case 'department':
+                    Livewire.dispatch('openCreateDepartment');
+                    break;
+                case 'employee-type':
+                    Livewire.dispatch('openCreateTenure');
+                    break;
+                case 'employee':
+                    Livewire.dispatch('openCreateEmployee');
+                    break;
+                case 'team':
+                    // TODO: Implement teams
+                    console.log('Teams not yet implemented');
+                    break;
+            }
         });
-
-        const optionItems = createNewPanel.querySelectorAll('.option-item');
-        optionItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const action = item.dataset.action;
-                console.log(`Opening modal for: ${action}`);
-                createNewPanel.classList.remove('show');
-            });
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!createNewBtn.contains(e.target) && !createNewPanel.contains(e.target)) {
-                createNewPanel.classList.remove('show');
-      }
-    });
-  }
+    }
 
     const viewTabs = document.querySelectorAll('.view-tab');
     const viewsSelector = document.querySelector('.views-selector');
@@ -134,51 +146,59 @@ function toggleActions() {
         toggleViewSections(activeTab.dataset.view);
     }
 
+  // Search inputs for other views
+  const siteSearchInput = document.querySelector('.search-input[data-search-view="site"]');
+  const departmentSearchInput = document.querySelector('.search-input[data-search-view="department"]');
+  const tenureSearchInput = document.querySelector('.search-input[data-search-view="employee-type"]');
+
+  // Dispatch Livewire events for search - debounced
   if (employeeSearchInput) {
-    const handleEmployeeSearch = () => performEmployeeSearch(employeeSearchInput.value);
-    employeeSearchInput.addEventListener('input', handleEmployeeSearch);
-    employeeSearchInput.addEventListener('keyup', handleEmployeeSearch);
+    let employeeDebounce;
+    employeeSearchInput.addEventListener('input', () => {
+      clearTimeout(employeeDebounce);
+      employeeDebounce = setTimeout(() => {
+        Livewire.dispatch('searchEmployees', { search: employeeSearchInput.value });
+      }, 300);
+    });
   }
 
   if (partnerSearchInput) {
-    const handlePartnerSearch = () => performPartnerSearch(partnerSearchInput.value);
-    partnerSearchInput.addEventListener('input', handlePartnerSearch);
-    partnerSearchInput.addEventListener('keyup', handlePartnerSearch);
-  }
-
-  function performEmployeeSearch(rawTerm = '') {
-    const employeeSection = document.querySelector('[data-view-section="employee"]');
-    const tableBody = employeeSection?.querySelector('.people-table tbody');
-    if (!tableBody) return;
-
-    const rows = Array.from(tableBody.querySelectorAll('tr'));
-    const term = (rawTerm || '').toLowerCase().trim();
-
-    let visibleCount = 0;
-    rows.forEach(row => {
-      if (row.querySelector('td[colspan]')) return;
-
-      const cells = Array.from(row.querySelectorAll('td:not(.checkbox-cell)'));
-      const matches = cells.some(td => td.textContent.toLowerCase().includes(term));
-      row.style.display = !term || matches ? '' : 'none';
-      if (!term || matches) visibleCount += 1;
+    let partnerDebounce;
+    partnerSearchInput.addEventListener('input', () => {
+      clearTimeout(partnerDebounce);
+      partnerDebounce = setTimeout(() => {
+        Livewire.dispatch('searchPartners', { search: partnerSearchInput.value });
+      }, 300);
     });
-
-    updateNoResultsRow(tableBody, term, visibleCount);
   }
 
-  function performPartnerSearch(rawTerm = '') {
-    const partnerSection = document.querySelector('[data-view-section="client"]');
-    const tableBody = partnerSection?.querySelector('.partners-table tbody');
-    if (!tableBody) return;
+  if (siteSearchInput) {
+    let siteDebounce;
+    siteSearchInput.addEventListener('input', () => {
+      clearTimeout(siteDebounce);
+      siteDebounce = setTimeout(() => {
+        Livewire.dispatch('searchSites', { search: siteSearchInput.value });
+      }, 300);
+    });
+  }
 
-    const rows = Array.from(tableBody.querySelectorAll('tr'));
-    const term = (rawTerm || '').toLowerCase().trim();
+  if (departmentSearchInput) {
+    let deptDebounce;
+    departmentSearchInput.addEventListener('input', () => {
+      clearTimeout(deptDebounce);
+      deptDebounce = setTimeout(() => {
+        Livewire.dispatch('searchDepartments', { search: departmentSearchInput.value });
+      }, 300);
+    });
+  }
 
-    rows.forEach(row => {
-      const cells = Array.from(row.querySelectorAll('td'));
-      const matches = cells.some(td => td.textContent.toLowerCase().includes(term));
-      row.style.display = !term || matches ? '' : 'none';
+  if (tenureSearchInput) {
+    let tenureDebounce;
+    tenureSearchInput.addEventListener('input', () => {
+      clearTimeout(tenureDebounce);
+      tenureDebounce = setTimeout(() => {
+        Livewire.dispatch('searchTenures', { search: tenureSearchInput.value });
+      }, 300);
     });
   }
 

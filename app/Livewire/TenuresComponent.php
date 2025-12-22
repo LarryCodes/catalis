@@ -22,6 +22,18 @@ class TenuresComponent extends Component
         }
     }
 
+    #[On('searchTenures')]
+    public function handleSearch($search)
+    {
+        $this->search = $search;
+    }
+
+    #[On('openCreateTenure')]
+    public function handleOpenCreateForm()
+    {
+        $this->openCreateForm();
+    }
+
     #[On('closeForm')]
     public function handleCloseForm()
     {

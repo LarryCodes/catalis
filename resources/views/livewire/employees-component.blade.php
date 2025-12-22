@@ -7,13 +7,6 @@
 
     <div class="controls">
         <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; flex: 1;">
-            <input
-                type="text"
-                wire:model.live.debounce.300ms="search"
-                placeholder="Search employees..."
-                class="search-input"
-                style="width: 200px;"
-            >
             <select wire:model.live="filterPartnerId" class="search-input" style="width: 180px;">
                 <option value="">All Partners</option>
                 @foreach($partners as $partner)
@@ -40,14 +33,6 @@
                     <option value="{{ $tenure->id }}">{{ $tenure->name }}</option>
                 @endforeach
             </select>
-        </div>
-        <div class="button-group">
-            @can('create-employees')
-                <button wire:click="openCreateForm" class="create-new-button">
-                    <img src="{{ asset('images/plus.svg') }}" alt="Add" class="plus-icon">
-                    <span class="create-new-text">Add Employee</span>
-                </button>
-            @endcan
         </div>
     </div>
 
