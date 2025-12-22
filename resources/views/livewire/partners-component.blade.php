@@ -32,10 +32,10 @@
                         <th style="width: 40px;">#</th>
                         <th style="padding-right: 25px; width: 120px;">Partner Code</th>
                         <th style="padding-right: 25px; width: 180px;">Company</th>
-                        <th style="padding-right: 25px; width: 150px;">Contact Person</th>
-                        <th style="padding-right: 25px; width: 180px;">Contact Email</th>
-                        <th style="padding-right: 25px; width: 120px;">Contact Phone</th>
+                        <th style="padding-right: 25px; width: 180px;">Email</th>
+                        <th style="padding-right: 25px; width: 120px;">Phone</th>
                         <th style="padding-right: 25px; width: 180px;">Address</th>
+                        <th style="padding-right: 25px; width: 150px;">Contact Person</th>
                         <th style="padding-right: 25px; width: 90px;">Headcount</th>
                         <th style="padding-right: 25px; width: 90px;">Status</th>
                         <th style="width: 60px;">Actions</th>
@@ -47,10 +47,19 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $partner->partner_code }}</td>
                             <td>{{ $partner->company_name }}</td>
-                            <td>{{ $partner->contact_person ?: '—' }}</td>
-                            <td>{{ $partner->contact_email }}</td>
-                            <td>{{ $partner->contact_phone ?: '—' }}</td>
-                            <td>{{ Str::limit($partner->company_address, 50) ?: '—' }}</td>
+                            <td>{{ $partner->company_email ?: '—' }}</td>
+                            <td>{{ $partner->company_phone ?: '—' }}</td>
+                            <td>{{ Str::limit($partner->company_address, 40) ?: '—' }}</td>
+                            <td>
+                                @if($partner->contact_person)
+                                    <div>{{ $partner->contact_person }}</div>
+                                    @if($partner->contact_person_title)
+                                        <div class="person-meta">{{ $partner->contact_person_title }}</div>
+                                    @endif
+                                @else
+                                    —
+                                @endif
+                            </td>
                             <td>{{ $partner->employees_count }}</td>
                             <td>
                                 <span class="status-pill {{ $partner->active ? 'active' : 'inactive' }}">

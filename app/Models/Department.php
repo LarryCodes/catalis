@@ -10,6 +10,7 @@ class Department extends Model
         'partner_id',
         'name',
         'description',
+		'department_head',
         'active',
     ];
 
