@@ -156,13 +156,8 @@
           label: 'Accounts & Access',
           icon: 'user.svg',
           children: [{
-              label: 'Account Management'
-            },
-            {
-              label: 'Permissions & Roles'
-            },
-            {
-              label: 'Access Management'
+              label: 'Account Management',
+              href: '/accounts'
             }
           ]
         },
@@ -220,8 +215,9 @@
 
           item.children.forEach(child => {
             const childLabel = typeof child === 'string' ? child : child.label || '';
+            const childHref = typeof child === 'object' && child.href ? child.href : 'javascript:void(0)';
             const link = document.createElement('a');
-            link.href = 'javascript:void(0)';
+            link.href = childHref;
             link.textContent = childLabel;
 
             if (child.children && child.children.length > 0) {
@@ -302,7 +298,8 @@
           const routes = {
             'Our People': '{{ url('/people') }}',
             'Time & Attendance': '{{ url('/time-attendance') }}',
-            'Payroll Management': '{{ url('/payroll') }}'
+            'Payroll Management': '{{ url('/payroll') }}',
+            'Account Management': '{{ url('/accounts') }}'
           };
 
           const path = routes[label];

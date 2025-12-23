@@ -102,7 +102,7 @@
         .login-btn {
             width: 100%;
             padding: 10px;
-            background: #000;
+            background: #007bff;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -112,7 +112,7 @@
         }
 
         .login-btn:hover {
-            background: #333;
+            background: #0056b3;
         }
 
         .error-message {
