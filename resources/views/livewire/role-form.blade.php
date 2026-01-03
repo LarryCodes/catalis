@@ -1,43 +1,74 @@
 <div>
+    <!-- Role Name Section -->
     <div class="form-group" style="margin-bottom: 16px;">
-        <label for="name" style="display: block; margin-bottom: 6px; font-weight: 500;">Role Name *</label>
-        <input type="text" id="name" wire:model="name" placeholder="Enter role name" 
-               style="width: 100%; padding: 10px 12px; border: 1px solid #e0e0e0; border-radius: 4px; font-size: 0.875rem;"
-               @if($role && $role->name === 'Super Admin') readonly @endif>
-        @error('name') <span style="color: #dc2626; font-size: 0.75rem;">{{ $message }}</span> @enderror
+        <label for="name">Role Name *</label>
+        <input type="text" id="name" wire:model="name" placeholder="e.g., HR Manager, Finance Officer"
+               @if($role && $role->name === 'Super Admin') readonly style="background: #f3f4f6;" @endif>
+        @error('name') <span class="error">{{ $message }}</span> @enderror
     </div>
 
-    <div class="form-group" style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 10px; font-weight: 500;">Assign Permissions</label>
-        <div style="max-height: 300px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px;">
-            @foreach($this->groupedPermissions as $resource => $permissions)
-                <div style="margin-bottom: 16px;">
-                    <h4 style="font-size: 0.875rem; font-weight: 600; text-transform: capitalize; margin-bottom: 8px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 4px;">
-                        {{ $resource }}
-                    </h4>
-                    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+    <!-- Permissions Section -->
+    <div style="margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <label style="font-weight: 500;">Permissions</label>
+            <span style="font-size: 0.75rem; color: #6b7280;">{{ count($selectedPermissions) }} selected</span>
+        </div>
+        
+        @foreach($this->groupedPermissions as $resource => $permissions)
+            @php
+                $permissionIds = collect($permissions)->pluck('id')->toArray();
+                $selectedCount = count(array_intersect($selectedPermissions, $permissionIds));
+                $allSelected = $selectedCount === count($permissionIds);
+                $someSelected = $selectedCount > 0 && !$allSelected;
+            @endphp
+            <div class="accordion-section">
+                <button type="button" class="accordion-header" wire:click="toggleSection('{{ $resource }}')">
+                    <span class="accordion-title">
+                        <span class="accordion-icon">{{ isset($openSections[$resource]) && $openSections[$resource] ? '−' : '+' }}</span>
+                        {{ ucwords(str_replace('-', ' ', $resource)) }}
+                    </span>
+                    <span class="accordion-status">
+                        @if($allSelected)
+                            <span class="status-complete">✓ All</span>
+                        @elseif($someSelected)
+                            <span style="color: #007bff; font-size: 0.75rem;">{{ $selectedCount }}/{{ count($permissions) }}</span>
+                        @else
+                            <span class="status-optional">{{ count($permissions) }} available</span>
+                        @endif
+                        <label style="margin-left: 12px; cursor: pointer;" onclick="event.stopPropagation();">
+                            <input type="checkbox" 
+                                   wire:click="togglePermissionGroup('{{ $resource }}')"
+                                   @if($allSelected) checked @endif
+                                   style="width: 16px; height: 16px; accent-color: #007bff; cursor: pointer;">
+                        </label>
+                    </span>
+                </button>
+                <div class="accordion-content" x-show="$wire.openSections && $wire.openSections['{{ $resource }}']" x-collapse>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                         @foreach($permissions as $permission)
-                            <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; min-width: 150px;">
-                                <input type="checkbox" wire:model="selectedPermissions" value="{{ $permission->id }}"
-                                       style="width: 14px; height: 14px;">
-                                <span style="font-size: 0.8rem;">{{ $permission->name }}</span>
+                            @php
+                                $parts = explode('-', $permission->name);
+                                $action = ucfirst($parts[0] ?? 'other');
+                                $isSelected = in_array($permission->id, $selectedPermissions);
+                            @endphp
+                            <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 6px 12px; background: {{ $isSelected ? '#dbeafe' : '#f9fafb' }}; border: 1px solid {{ $isSelected ? '#3b82f6' : '#e0e0e0' }}; border-radius: 4px; font-size: 0.8rem;">
+                                <input type="checkbox" 
+                                       wire:model.live="selectedPermissions" 
+                                       value="{{ $permission->id }}"
+                                       style="width: 14px; height: 14px; accent-color: #007bff; cursor: pointer;">
+                                <span style="color: {{ $isSelected ? '#1e40af' : '#333' }};">{{ $action }}</span>
                             </label>
                         @endforeach
                     </div>
                 </div>
-            @endforeach
-        </div>
-        @error('selectedPermissions') <span style="color: #dc2626; font-size: 0.75rem;">{{ $message }}</span> @enderror
+            </div>
+        @endforeach
+        @error('selectedPermissions') <span class="error">{{ $message }}</span> @enderror
     </div>
 
-    <div class="form-actions" style="display: flex; gap: 12px; justify-content: flex-end;">
-        <button type="button" wire:click="$parent.closeForm" 
-                style="padding: 10px 20px; background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 4px; cursor: pointer;">
-            Cancel
-        </button>
-        <button type="button" wire:click="save" 
-                style="padding: 10px 20px; background: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer;">
-            {{ $role ? 'Update Role' : 'Create Role' }}
-        </button>
+    <!-- Action Buttons -->
+    <div class="form-actions">
+        <button type="button" wire:click="$parent.closeForm" class="btn-cancel">Cancel</button>
+        <button type="button" wire:click="save" class="btn-save">{{ $role ? 'Update Role' : 'Create Role' }}</button>
     </div>
 </div>

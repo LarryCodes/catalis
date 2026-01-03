@@ -12,6 +12,16 @@ class RoleForm extends Component
     
     public $name = '';
     public $selectedPermissions = [];
+    public $openSections = [];
+
+    public function toggleSection($section)
+    {
+        if (isset($this->openSections[$section])) {
+            $this->openSections[$section] = !$this->openSections[$section];
+        } else {
+            $this->openSections[$section] = true;
+        }
+    }
 
     public function mount(?Role $role = null)
     {
@@ -49,6 +59,26 @@ class RoleForm extends Component
         
         ksort($grouped);
         return $grouped;
+    }
+
+    public function togglePermissionGroup($resource)
+    {
+        $groupedPermissions = $this->groupedPermissions;
+        
+        if (!isset($groupedPermissions[$resource])) {
+            return;
+        }
+        
+        $permissionIds = collect($groupedPermissions[$resource])->pluck('id')->toArray();
+        $allSelected = count(array_intersect($this->selectedPermissions, $permissionIds)) === count($permissionIds);
+        
+        if ($allSelected) {
+            // Deselect all in this group
+            $this->selectedPermissions = array_values(array_diff($this->selectedPermissions, $permissionIds));
+        } else {
+            // Select all in this group
+            $this->selectedPermissions = array_values(array_unique(array_merge($this->selectedPermissions, $permissionIds)));
+        }
     }
 
     public function save()

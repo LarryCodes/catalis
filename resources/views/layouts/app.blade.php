@@ -36,7 +36,7 @@
         <img src="{{ asset('images/profile.jpg') }}" alt="Profile Picture" class="profile-avatar">
         <div class="profile-info">
           <div class="user-fullname">{{ auth()->user()->name ?? 'Administrator' }}</div>
-          <div class="user-title">{{ auth()->user()->title ?? 'System Administrator' }}</div>
+          <div class="user-title">{{ auth()->user()->roles->first()?->name ?? 'User' }}</div>
         </div>
       </div>
       <hr>

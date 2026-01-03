@@ -41,28 +41,31 @@
 
     .modal-content {
         background: white;
-        border-radius: 8px;
+        border-radius: 12px;
         width: 90%;
-        max-width: 500px;
-        max-height: 80vh;
+        max-width: 680px;
+        max-height: 85vh;
         overflow-y: auto;
         margin: auto;
         position: relative;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
 
     .modal-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 20px 24px;
-        border-bottom: 1px solid #e0e0e0;
+        padding: 20px 28px;
+        border-bottom: 1px solid #e5e7eb;
+        background: #f9fafb;
+        border-radius: 12px 12px 0 0;
     }
 
     .modal-header h3 {
         margin: 0;
-        font-size: 1.1rem;
-        font-weight: 800;
-        color: #000;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: #1f2937;
     }
 
     .modal-close {
@@ -70,11 +73,115 @@
         border: none;
         font-size: 24px;
         cursor: pointer;
-        color: #666;
+        color: #9ca3af;
+        transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+        color: #374151;
     }
 
     .modal-body {
         padding: 24px;
+    }
+
+    /* Accordion Styles */
+    .accordion-section {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        overflow: hidden;
+    }
+
+    .accordion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 14px 16px;
+        background: #f8f9fa;
+        border: none;
+        cursor: pointer;
+        font-family: 'Segoe UI', Helvetica;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #333;
+        text-align: left;
+    }
+
+    .accordion-header:hover {
+        background: #f0f0f0;
+    }
+
+    .accordion-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .accordion-icon {
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e0e0e0;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .accordion-status {
+        display: flex;
+        align-items: center;
+    }
+
+    .accordion-status .status-complete {
+        color: #059669;
+        font-weight: bold;
+    }
+
+    .accordion-status .status-incomplete {
+        color: #dc2626;
+        font-size: 0.75rem;
+    }
+
+    .accordion-status .status-optional {
+        color: #6b7280;
+        font-size: 0.75rem;
+    }
+
+    .accordion-content {
+        padding: 16px;
+        border-top: 1px solid #e0e0e0;
+        background: white;
+    }
+
+    .btn-cancel {
+        padding: 10px 20px;
+        background: #f5f5f5;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .btn-cancel:hover {
+        background: #e8e8e8;
+    }
+
+    .btn-save {
+        padding: 10px 20px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .btn-save:hover {
+        background: #0056b3;
     }
 
     /* Form styles */
@@ -188,6 +295,11 @@
 
     .action-item.deactivate:hover {
         background: #ffebee;
+    }
+
+    .people-table tbody tr:hover {
+        background-color: #f5f5f5;
+        cursor: pointer;
     }
 </style>
 @endpush

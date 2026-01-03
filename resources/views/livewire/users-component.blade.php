@@ -16,6 +16,9 @@
             <table class="people-table" data-table="users" style="position: relative;">
                 <thead>
                     <tr>
+                        <th class="checkbox-cell" style="width: 20px;">
+                            <input type="checkbox" id="select-all-users" title="Select All" />
+                        </th>
                         <th style="width: 40px;">#</th>
                         <th style="padding-right: 25px; width: 200px;">Name</th>
                         <th style="padding-right: 25px; width: 250px;">Email</th>
@@ -26,6 +29,9 @@
                 <tbody>
                     @foreach($this->users as $index => $user)
                         <tr style="animation: none; opacity: 1; transform: none;">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="user-checkbox" name="select_user" value="{{ $user->id }}">
+                            </td>
                             <td>{{ $this->users->firstItem() + $index }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>

@@ -16,6 +16,9 @@
             <table class="people-table" data-table="roles" style="position: relative;">
                 <thead>
                     <tr>
+                        <th class="checkbox-cell" style="width: 20px;">
+                            <input type="checkbox" id="select-all-roles" title="Select All" />
+                        </th>
                         <th style="width: 40px;">#</th>
                         <th style="padding-right: 25px; width: 200px;">Role Name</th>
                         <th style="padding-right: 25px;">Permissions Count</th>
@@ -25,6 +28,9 @@
                 <tbody>
                     @foreach($this->roles as $index => $role)
                         <tr style="animation: none; opacity: 1; transform: none;">
+                            <td class="checkbox-cell">
+                                <input type="checkbox" class="role-checkbox" name="select_role" value="{{ $role->id }}">
+                            </td>
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $role->name }}</td>
                             <td>{{ $role->permissions_count }} permissions</td>
