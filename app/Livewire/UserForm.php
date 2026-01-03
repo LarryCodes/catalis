@@ -16,7 +16,7 @@ class UserForm extends Component
     public $email = '';
     public $password = '';
     public $password_confirmation = '';
-    public $selectedRoles = [];
+    public $selectedRoles = null;
 
     public function mount(?User $user = null)
     {
@@ -25,7 +25,7 @@ class UserForm extends Component
         if ($user) {
             $this->name = $user->name;
             $this->email = $user->email;
-            $this->selectedRoles = $user->roles->pluck('id')->toArray();
+            $this->selectedRoles = $user->roles->first()?->id;
         }
     }
 
@@ -36,7 +36,7 @@ class UserForm extends Component
         $rules = [
             'name' => 'required|string|max:255',
             'email' => ['required', 'email', Rule::unique('users')->ignore($userId)],
-            'selectedRoles' => 'array',
+            'selectedRoles' => 'required|exists:roles,id',
         ];
 
         if (!$this->user) {
@@ -57,42 +57,58 @@ class UserForm extends Component
     {
         $this->validate();
 
-        if ($this->user) {
-            if (!auth()->user()->can('manage-users')) {
-                abort(403);
-            }
-            
-            $data = [
-                'name' => $this->name,
-                'email' => $this->email,
-            ];
-            
-            if ($this->password) {
-                $data['password'] = Hash::make($this->password);
-            }
-            
-            $this->user->update($data);
-            $this->user->syncRoles($this->selectedRoles);
-            
-            $message = 'User updated successfully.';
-        } else {
-            if (!auth()->user()->can('manage-users')) {
-                abort(403);
-            }
-            
-            $user = User::create([
-                'name' => $this->name,
-                'email' => $this->email,
-                'password' => Hash::make($this->password),
-            ]);
-            
-            $user->syncRoles($this->selectedRoles);
-            
-            $message = 'User created successfully.';
+        if (!auth()->user()->can('manage-users')) {
+            abort(403);
         }
 
-        $this->dispatch('userSaved', message: $message);
-        $this->dispatch('closeForm');
+        \DB::beginTransaction();
+        
+        try {
+            if ($this->user) {
+                // Update existing user
+                $data = [
+                    'name' => $this->name,
+                    'email' => $this->email,
+                ];
+                
+                if ($this->password) {
+                    $data['password'] = Hash::make($this->password);
+                }
+                
+                $this->user->update($data);
+                $this->user->syncRoles([Role::find($this->selectedRoles)]);
+                
+                $message = 'User updated successfully.';
+            } else {
+                // Create new user
+                $user = User::create([
+                    'name' => $this->name,
+                    'email' => $this->email,
+                    'password' => Hash::make($this->password),
+                ]);
+                
+                $user->syncRoles([Role::find($this->selectedRoles)]);
+                
+                $message = 'User created successfully.';
+            }
+
+            \DB::commit();
+            
+            $this->dispatch('userSaved', message: $message);
+            $this->dispatch('closeForm');
+            
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            
+            // If it's a validation error, re-throw it
+            if ($e instanceof \Illuminate\Validation\ValidationException) {
+                throw $e;
+            }
+            
+            // For other errors, show a generic message
+            session()->flash('error', 'Failed to save user. Please try again.');
+            throw $e;
+        }
     }
 
     public function render()

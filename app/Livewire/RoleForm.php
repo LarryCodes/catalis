@@ -66,7 +66,7 @@ class RoleForm extends Component
             }
             
             $this->role->update(['name' => $this->name]);
-            $this->role->syncPermissions($this->selectedPermissions);
+            $this->role->syncPermissions(Permission::whereIn('id', $this->selectedPermissions)->get());
             
             $message = 'Role updated successfully.';
         } else {
@@ -75,7 +75,7 @@ class RoleForm extends Component
             }
             
             $role = Role::create(['name' => $this->name]);
-            $role->syncPermissions($this->selectedPermissions);
+            $role->syncPermissions(Permission::whereIn('id', $this->selectedPermissions)->get());
             
             $message = 'Role created successfully.';
         }

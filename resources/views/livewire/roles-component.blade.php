@@ -13,7 +13,7 @@
 
     <div>
         @if($this->roles->count() > 0)
-            <table class="people-table">
+            <table class="people-table" data-table="roles" style="position: relative;">
                 <thead>
                     <tr>
                         <th style="width: 40px;">#</th>
@@ -24,7 +24,7 @@
                 </thead>
                 <tbody>
                     @foreach($this->roles as $index => $role)
-                        <tr>
+                        <tr style="animation: none; opacity: 1; transform: none;">
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $role->name }}</td>
                             <td>{{ $role->permissions_count }} permissions</td>

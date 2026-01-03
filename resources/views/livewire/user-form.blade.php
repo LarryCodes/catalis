@@ -29,11 +29,11 @@
     </div>
 
     <div class="form-group" style="margin-bottom: 20px;">
-        <label style="display: block; margin-bottom: 10px; font-weight: 500;">Assign Roles</label>
+        <label style="display: block; margin-bottom: 10px; font-weight: 500;">Assign Role *</label>
         <div style="display: flex; flex-wrap: wrap; gap: 12px;">
             @foreach($this->roles as $role)
                 <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
-                    <input type="checkbox" wire:model="selectedRoles" value="{{ $role->id }}"
+                    <input type="radio" wire:model="selectedRoles" value="{{ $role->id }}"
                            style="width: 16px; height: 16px;">
                     <span>{{ $role->name }}</span>
                 </label>

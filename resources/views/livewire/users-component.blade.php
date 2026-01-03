@@ -13,19 +13,19 @@
 
     <div>
         @if($this->users->count() > 0)
-            <table class="people-table">
+            <table class="people-table" data-table="users" style="position: relative;">
                 <thead>
                     <tr>
                         <th style="width: 40px;">#</th>
                         <th style="padding-right: 25px; width: 200px;">Name</th>
                         <th style="padding-right: 25px; width: 250px;">Email</th>
-                        <th style="padding-right: 25px;">Roles</th>
+                        <th style="padding-right: 25px;">Role</th>
                         <th style="width: 80px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($this->users as $index => $user)
-                        <tr>
+                        <tr style="animation: none; opacity: 1; transform: none;">
                             <td>{{ $this->users->firstItem() + $index }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
