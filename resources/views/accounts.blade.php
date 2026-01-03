@@ -159,20 +159,21 @@
 
     .btn-cancel {
         padding: 10px 20px;
-        background: #f5f5f5;
-        border: 1px solid #e0e0e0;
+        background: #000000;
+        color: #fff;
+        border: none;
         border-radius: 4px;
         cursor: pointer;
         font-weight: 500;
     }
 
     .btn-cancel:hover {
-        background: #e8e8e8;
+        background: #333333;
     }
 
     .btn-save {
         padding: 10px 20px;
-        background: #007bff;
+        background: #000000;
         color: #fff;
         border: none;
         border-radius: 4px;
@@ -181,7 +182,7 @@
     }
 
     .btn-save:hover {
-        background: #0056b3;
+        background: #333333;
     }
 
     /* Form styles */

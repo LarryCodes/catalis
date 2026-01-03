@@ -47,8 +47,6 @@
                     <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                         @foreach($permissions as $permission)
                             @php
-                                $parts = explode('-', $permission->name);
-                                $action = ucfirst($parts[0] ?? 'other');
                                 $isSelected = in_array($permission->id, $selectedPermissions);
                             @endphp
                             <label style="display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 6px 12px; background: {{ $isSelected ? '#dbeafe' : '#f9fafb' }}; border: 1px solid {{ $isSelected ? '#3b82f6' : '#e0e0e0' }}; border-radius: 4px; font-size: 0.8rem;">
@@ -56,7 +54,7 @@
                                        wire:model.live="selectedPermissions" 
                                        value="{{ $permission->id }}"
                                        style="width: 14px; height: 14px; accent-color: #007bff; cursor: pointer;">
-                                <span style="color: {{ $isSelected ? '#1e40af' : '#333' }};">{{ $action }}</span>
+                                <span style="color: {{ $isSelected ? '#1e40af' : '#333' }};">{{ $permission->name }}</span>
                             </label>
                         @endforeach
                     </div>

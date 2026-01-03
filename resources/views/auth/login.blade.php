@@ -101,18 +101,20 @@
 
         .login-btn {
             width: 100%;
-            padding: 10px;
-            background: #007bff;
+            padding: 12px;
+            background-color: #000000;
+            border-color: #000000;
             color: #fff;
             border: none;
             border-radius: 4px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: background-color 0.2s;
         }
 
         .login-btn:hover {
-            background: #0056b3;
+            background-color: #333333;
+            border-color: #333333;
         }
 
         .error-message {
